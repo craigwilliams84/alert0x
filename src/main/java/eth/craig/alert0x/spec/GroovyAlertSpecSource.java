@@ -10,6 +10,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
@@ -39,7 +40,7 @@ public class GroovyAlertSpecSource implements AlertSpecSource {
         try {
             final GroovyShell groovyShell = new GroovyShell();
 
-            final Script script = groovyShell.parse(resource.getFile());
+            final Script script = groovyShell.parse(new InputStreamReader(resource.getInputStream()));
             final Object when =  script.invokeMethod("when", null);
 
             if (!(when instanceof Criterion)) {

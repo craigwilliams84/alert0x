@@ -1,0 +1,4 @@
+You have sent a transaction to ${to} for ${ethValue} ether.
+<br><br>
+<a href='https://etherscan.io/tx/${txHash}'>${txHash}</a>
+
