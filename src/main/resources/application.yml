@@ -1,0 +1,7 @@
+alert0x:
+  email:
+    cacheExpiry: 60000
+
+  mailgun:
+    apiKey: ${MAILGUN_API_KEY}
+    baseUrl: https://api.mailgun.net/v3/sandbox0f70e714cfd84a1683a9ce0ce8ada578.mailgun.org
