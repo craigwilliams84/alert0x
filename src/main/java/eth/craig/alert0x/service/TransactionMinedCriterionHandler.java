@@ -5,9 +5,12 @@ import eth.craig.alert0x.model.monitor.TransactionIdentifierType;
 import eth.craig.alert0x.model.monitor.TransactionMonitor;
 import eth.craig.alert0x.spec.Criterion;
 import eth.craig.alert0x.spec.TransactionMined;
+import eth.craig.alert0x.util.JSON;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @AllArgsConstructor
 public class TransactionMinedCriterionHandler implements CriterionHandler {
@@ -24,6 +27,7 @@ public class TransactionMinedCriterionHandler implements CriterionHandler {
         final TransactionMined txMined = (TransactionMined) criterion;
 
         final TransactionMonitor monitor = buildMonitor(id, txMined);
+        log.info("Registering transaction monitor: {}", JSON.stringify(monitor));
         blockchainMonitorService.monitorTransactions(monitor);
     }
 
