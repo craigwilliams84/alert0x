@@ -1,0 +1,4 @@
+A wallet has been created with address ${indexedParam1}.
+<br><br>
+<a href='https://etherscan.io/tx/${txHash}'>${txHash}</a>
+

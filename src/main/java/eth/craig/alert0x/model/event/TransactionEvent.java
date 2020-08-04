@@ -11,9 +11,9 @@ import java.math.BigInteger;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TransactionEvent {
+public class TransactionEvent implements TransactionBasedEvent {
 
-    private String hash;
+    private String transactionHash;
     private BigInteger nonce;
     private String blockHash;
     private BigInteger blockNumber;

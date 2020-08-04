@@ -12,7 +12,7 @@ public class TransactionEventFactory {
     public TransactionEvent build(TransactionDetails transactionDetails) {
         return TransactionEvent
                 .builder()
-                .hash(transactionDetails.getHash())
+                .transactionHash(transactionDetails.getHash())
                 .nonce(Numeric.decodeQuantity(transactionDetails.getNonce()))
                 .blockHash(transactionDetails.getBlockHash())
                 .blockNumber(Numeric.decodeQuantity(transactionDetails.getBlockNumber()))

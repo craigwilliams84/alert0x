@@ -1,8 +1,9 @@
-package eth.craig.alert0x.service;
+package eth.craig.alert0x.service.criterion;
 
 import eth.craig.alert0x.model.event.TransactionStatus;
 import eth.craig.alert0x.model.monitor.TransactionIdentifierType;
 import eth.craig.alert0x.model.monitor.TransactionMonitor;
+import eth.craig.alert0x.service.BlockchainMonitorService;
 import eth.craig.alert0x.spec.Criterion;
 import eth.craig.alert0x.spec.TransactionMined;
 import eth.craig.alert0x.util.JSON;
@@ -23,7 +24,7 @@ public class TransactionMinedCriterionHandler implements CriterionHandler {
     }
 
     @Override
-    public void handle(String id, Criterion criterion) {
+    public void register(String id, Criterion criterion) {
         final TransactionMined txMined = (TransactionMined) criterion;
 
         final TransactionMonitor monitor = buildMonitor(id, txMined);

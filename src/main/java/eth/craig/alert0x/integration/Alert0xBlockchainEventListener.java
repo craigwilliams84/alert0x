@@ -1,5 +1,6 @@
 package eth.craig.alert0x.integration;
 
+import eth.craig.alert0x.model.factory.ContractEventFactory;
 import eth.craig.alert0x.model.factory.TransactionEventFactory;
 import eth.craig.alert0x.util.JSON;
 import lombok.AllArgsConstructor;
@@ -20,6 +21,8 @@ public class Alert0xBlockchainEventListener implements OnBlockchainEventListener
 
     private TransactionEventFactory transactionEventFactory;
 
+    private ContractEventFactory contractEventFactory;
+
     @Override
     public void onNewBlock(BlockDetails block) {
 
@@ -27,7 +30,8 @@ public class Alert0xBlockchainEventListener implements OnBlockchainEventListener
 
     @Override
     public void onContractEvent(ContractEventDetails eventDetails) {
-
+        log.info("Received contract event: {}", JSON.stringify(eventDetails));
+        applicationEventPublisher.publishEvent(contractEventFactory.build(eventDetails));
     }
 
     @Override

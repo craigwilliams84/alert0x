@@ -18,11 +18,18 @@ public class AlertContextKeys {
 //        private TransactionStatus status;
 //
 //        private String monitorId;
+
+    //For Transactions
     public static final String FROM = "from";
     public static final String TO = "to";
     public static final String VALUE = "value";
     public static final String ETH_VALUE = "ethValue";
     public static final String TX_HASH = "txHash";
-
     public static final String SPEC_ID = "specId";
+
+    //For Events
+    public static final String EVENT_NAME = "eventName";
+    public static final String MONITOR_ID = "monitorId";
+    public static final String INDEXED_PARAM_PREFIX = "indexedParam";
+    public static final String PARAM_PREFIX = "param";
 }

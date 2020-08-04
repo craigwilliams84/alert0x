@@ -1,5 +1,6 @@
 package eth.craig.alert0x.service;
 
+import eth.craig.alert0x.service.criterion.CriterionHandler;
 import eth.craig.alert0x.spec.AlertSpec;
 import eth.craig.alert0x.spec.Criterion;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,7 +33,7 @@ public class DefaultAlertSpecRegistrar implements AlertSpecRegistrar {
                 .filter(handler -> handler.isSupported(criterion))
                 .findFirst()
                 .orElseThrow(() -> new UnsupportedOperationException("Unsupported criterion type"))
-                .handle(alertSpec.getId(), criterion);
+                .register(alertSpec.getId(), criterion);
     }
 
     @Override

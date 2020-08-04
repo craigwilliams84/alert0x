@@ -28,7 +28,7 @@ public class TransactionAlertContextFactory implements AlertContextFactory<Trans
             putIfNotEmpty(ETH_VALUE, Convert.fromWei(
                     new BigDecimal(input.getValue()), Convert.Unit.ETHER).toString(), values);
         }
-        putIfNotEmpty(TX_HASH, input.getHash(), values);
+        putIfNotEmpty(TX_HASH, input.getTransactionHash(), values);
 
         putIfNotEmpty(SPEC_ID, input.getMonitorId(), values);
 

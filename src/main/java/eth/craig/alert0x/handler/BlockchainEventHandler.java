@@ -1,5 +1,6 @@
 package eth.craig.alert0x.handler;
 
+import eth.craig.alert0x.model.event.ContractEvent;
 import eth.craig.alert0x.model.event.TransactionEvent;
 import eth.craig.alert0x.service.AlertSpecRegistrar;
 import eth.craig.alert0x.service.alert.AlertService;
@@ -20,7 +21,9 @@ public class BlockchainEventHandler {
 
     private AlertService alertService;
 
-    private AlertContextFactory<TransactionEvent> alertContextFactory;
+    private AlertContextFactory<TransactionEvent> transactionAlertContextFactory;
+
+    private AlertContextFactory<ContractEvent> eventAlertContextFactory;
 
     @Async
     @EventListener
@@ -28,9 +31,21 @@ public class BlockchainEventHandler {
         final AlertSpec alertSpec = alertSpecRegistrar.getRegisteredAlertSpecs().get(transactionEvent.getMonitorId());
 
         if (alertSpec.getCriterion().matches(transactionEvent)) {
-            log.info("Transaction {} matches alert spec {}", transactionEvent.getHash(), alertSpec.getId());
+            log.info("Transaction {} matches alert spec {}", transactionEvent.getTransactionHash(), alertSpec.getId());
             alertSpec.getAlerts().forEach(alert -> alertService.sendAlert(
-                    alert, alertContextFactory.build(transactionEvent)));
+                    alert, transactionAlertContextFactory.build(transactionEvent)));
+        }
+    }
+
+    @Async
+    @EventListener
+    public void handleContractEvent(ContractEvent contractEvent) {
+        final AlertSpec alertSpec = alertSpecRegistrar.getRegisteredAlertSpecs().get(contractEvent.getMonitorId());
+
+        if (alertSpec.getCriterion().matches(contractEvent)) {
+            log.info("Contract event {} matches alert spec {}", contractEvent.getName(), alertSpec.getId());
+            alertSpec.getAlerts().forEach(alert -> alertService.sendAlert(
+                    alert, eventAlertContextFactory.build(contractEvent)));
         }
     }
 }
