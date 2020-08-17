@@ -27,7 +27,7 @@ public class EventEmittedCriterionHandler implements CriterionHandler {
                 .builder()
                 .id(id)
                 .contractAddress(eventEmitted.getFromContract())
-                .specificationDefinition(eventEmitted.getWithSpec())
+                .specificationDefinition(eventEmitted.getSpec())
                 .build());
     }
 }

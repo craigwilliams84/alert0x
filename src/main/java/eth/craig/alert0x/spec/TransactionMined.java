@@ -1,6 +1,7 @@
 package eth.craig.alert0x.spec;
 
 import eth.craig.alert0x.model.event.TransactionEvent;
+import eth.craig.alert0x.spec.verifier.CriterionVerifier;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -17,7 +18,7 @@ import java.util.function.BiFunction;
 @AllArgsConstructor
 public class TransactionMined implements Criterion {
 
-    private static final List<BiFunction<TransactionMined, TransactionEvent, Boolean>> verifiers = new ArrayList<>();
+    private static final List<CriterionVerifier<TransactionMined, TransactionEvent>> verifiers = new ArrayList<>();
 
     static {
         verifiers.add((criterion, tx) -> criterion.getFrom() == null || criterion.getFrom().equalsIgnoreCase(tx.getFrom()));
@@ -49,6 +50,6 @@ public class TransactionMined implements Criterion {
 
         return !verifiers
                 .stream()
-                .anyMatch(verifier -> !verifier.apply(this, event));
+                .anyMatch(verifier -> !verifier.isMatching(this, event));
     }
 }

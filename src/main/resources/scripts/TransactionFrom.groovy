@@ -6,7 +6,7 @@ import eth.craig.alert0x.spec.TransactionMined
 def when() {
     TransactionMined
             .builder()
-            .from("<SET ME>")
+            .from("0x4d91838268f6d6D4e590e8fd2a001Cd91c32e7A4")
             .build()
 }
 

@@ -1,0 +1,4 @@
+Chi has been minted.
+<br><br>
+<a href='https://etherscan.io/tx/${txHash}'>${txHash}</a>
+

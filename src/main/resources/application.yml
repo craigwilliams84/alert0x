@@ -5,3 +5,8 @@ alert0x:
   mailgun:
     apiKey: ${MAILGUN_API_KEY}
     baseUrl: https://api.mailgun.net/v3/sandbox0f70e714cfd84a1683a9ce0ce8ada578.mailgun.org
+
+  etherscan:
+    apiKey: ${ETHERSCAN_API_KEY}
+    baseUrl: https://api.etherscan.io/api
+

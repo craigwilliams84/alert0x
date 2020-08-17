@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.autoconfigure.mongo.MongoAutoConfiguration;
 import org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.ConfigurableApplicationContext;
 
 @SpringBootApplication(exclude= {
@@ -15,6 +16,7 @@ import org.springframework.context.ConfigurableApplicationContext;
         DataSourceAutoConfiguration.class,
         MongoAutoConfiguration.class})
 @EnableEventeum
+@EnableFeignClients
 public class Alert0xApplication {
 
     public static void main(String[] args) {

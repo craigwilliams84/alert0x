@@ -6,8 +6,9 @@ import eth.craig.alert0x.spec.EventEmitted
 def when() {
     EventEmitted
             .builder()
-            .withSpec("WalletCreated(indexed address wallet, indexed address owner, indexed address guardian")
-            .fromContract("0x40C84310Ef15B0c0E5c69d25138e0E16e8000fE9")
+            .withSpec("Transfer(indexed address from, indexed address to, uint256 tokens)")
+            .fromContract("0x0000000000004946c0e9f43f4dee607b0ef1fa1c")
+            .havingArgumentValue("0x0000000000000000000000000000000000000000", 0, true)
             .build()
 }
 
@@ -16,11 +17,7 @@ def sendAlerts() {
             .builder()
             .from("event@alert0x.com")
             .to("craigwilliams84@gmail.com")
-            .subject("Wallet Created")
-            .bodyTemplate("wallet_created.template")
+            .subject("Chi Minted!")
+            .bodyTemplate("chi_minted.template")
             .build()]
-}
-
-def isDisabled() {
-    true
 }

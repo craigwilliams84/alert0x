@@ -16,8 +16,7 @@ logging:
 ethereum:
   nodes:
     - name: default
-      url: ${ETHEREUM_NODE_URL:wss://mainnet.infura.io/ws/v3/6d00f1fc08d84be7a25d76996d16550b}
-      #url: ${ETHEREUM_NODE_URL:wss://rinkeby.infura.io/ws/v3/6d00f1fc08d84be7a25d76996d16550b}
+      url: ${ETHEREUM_NODE_URL}
       #url: ${ETHEREUM_NODE_URL:http://localhost:8545}
       blockStrategy: POLL
       syncingThreshold: 100
