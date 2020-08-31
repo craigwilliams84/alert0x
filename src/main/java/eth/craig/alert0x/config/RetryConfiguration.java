@@ -38,4 +38,19 @@ public class RetryConfiguration {
 
         return retryTemplate;
     }
+
+    @Bean
+    RetryTemplate httpPostRetryTemplate() {
+        RetryTemplate retryTemplate = new RetryTemplate();
+
+        FixedBackOffPolicy fixedBackOffPolicy = new FixedBackOffPolicy();
+        fixedBackOffPolicy.setBackOffPeriod(500l);
+        retryTemplate.setBackOffPolicy(fixedBackOffPolicy);
+
+        SimpleRetryPolicy retryPolicy = new SimpleRetryPolicy();
+        retryPolicy.setMaxAttempts(4);
+        retryTemplate.setRetryPolicy(retryPolicy);
+
+        return retryTemplate;
+    }
 }

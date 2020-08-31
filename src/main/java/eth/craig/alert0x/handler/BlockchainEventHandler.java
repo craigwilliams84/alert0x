@@ -1,11 +1,14 @@
 package eth.craig.alert0x.handler;
 
+import eth.craig.alert0x.model.alert.Alert;
+import eth.craig.alert0x.model.alert.AlertContext;
 import eth.craig.alert0x.model.event.ContractEvent;
 import eth.craig.alert0x.model.event.TransactionEvent;
 import eth.craig.alert0x.service.AlertSpecRegistrar;
 import eth.craig.alert0x.service.alert.AlertService;
 import eth.craig.alert0x.service.factory.AlertContextFactory;
 import eth.craig.alert0x.spec.AlertSpec;
+import eth.craig.alert0x.util.JSON;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.event.EventListener;
@@ -32,8 +35,7 @@ public class BlockchainEventHandler {
 
         if (alertSpec.getCriterion().matches(transactionEvent)) {
             log.info("Transaction {} matches alert spec {}", transactionEvent.getTransactionHash(), alertSpec.getId());
-            alertSpec.getAlerts().forEach(alert -> alertService.sendAlert(
-                    alert, transactionAlertContextFactory.build(transactionEvent)));
+            alertSpec.getAlerts().forEach(alert -> sendAlert(alert, transactionAlertContextFactory.build(transactionEvent)));
         }
     }
 
@@ -44,8 +46,16 @@ public class BlockchainEventHandler {
 
         if (alertSpec.getCriterion().matches(contractEvent)) {
             log.info("Contract event {} matches alert spec {}", contractEvent.getName(), alertSpec.getId());
-            alertSpec.getAlerts().forEach(alert -> alertService.sendAlert(
-                    alert, eventAlertContextFactory.build(contractEvent)));
+            alertSpec.getAlerts().forEach(alert -> sendAlert(alert, eventAlertContextFactory.build(contractEvent)));
+        }
+    }
+
+    private void sendAlert(Alert alert, AlertContext alertContext) {
+        try {
+            log.info("Sending alert {}", JSON.stringify(alert));
+            alertService.sendAlert(alert, alertContext);
+        } catch (Exception e) {
+            log.error("Unable to send alert " + JSON.stringify(alert), e);
         }
     }
 }
