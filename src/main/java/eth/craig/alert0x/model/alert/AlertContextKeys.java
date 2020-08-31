@@ -26,6 +26,7 @@ public class AlertContextKeys {
     public static final String ETH_VALUE = "ethValue";
     public static final String TX_HASH = "txHash";
     public static final String SPEC_ID = "specId";
+    public static final String STATUS = "status";
 
     //For Events
     public static final String EVENT_NAME = "eventName";

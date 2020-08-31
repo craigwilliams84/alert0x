@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -35,7 +36,11 @@ public class EventeumBlockchainService implements BlockchainMonitorService {
         eventeumSpec.setNodeName("default");
         eventeumSpec.setType(transactionMonitor.getType().toString());
         eventeumSpec.setTransactionIdentifierValue(transactionMonitor.getIdentifierValue());
-        eventeumSpec.setStatuses(Collections.singletonList(convert(transactionMonitor.getStatus())));
+        eventeumSpec.setStatuses(transactionMonitor
+                .getStatuses()
+                .stream()
+                .map(status -> convert(status))
+                .collect(Collectors.toList()));
 
         eventeumTransactionService.registerTransactionsToMonitor(eventeumSpec);
     }

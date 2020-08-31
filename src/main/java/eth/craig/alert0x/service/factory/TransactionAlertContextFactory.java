@@ -32,6 +32,8 @@ public class TransactionAlertContextFactory implements AlertContextFactory<Trans
 
         putIfNotEmpty(SPEC_ID, input.getMonitorId(), values);
 
+        putIfNotEmpty(STATUS, input.getStatus().name(), values);
+
         return AlertContext
                 .builder()
                 .values(values)
