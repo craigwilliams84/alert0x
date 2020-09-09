@@ -21,3 +21,7 @@ def sendAlerts() {
             .bodyTemplate("chi_minted.template")
             .build()]
 }
+
+def isDisabled() {
+    true
+}

@@ -2,10 +2,7 @@ package eth.craig.alert0x.spec;
 
 import eth.craig.alert0x.model.event.ContractEvent;
 import eth.craig.alert0x.service.BlockchainService;
-import eth.craig.alert0x.spec.verifier.CriterionVerifier;
-import eth.craig.alert0x.spec.verifier.EventArgumentValueVerifier;
-import eth.craig.alert0x.spec.verifier.EventInternalTransactionFromVerifier;
-import eth.craig.alert0x.spec.verifier.EventTransactionFromVerifier;
+import eth.craig.alert0x.spec.verifier.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -27,6 +24,8 @@ public class EventEmitted implements BlockchainInteractingCriterion {
     private List<String> transactionSentFrom;
 
     private List<String> internalTransactionSentFrom;
+
+    private boolean internalTransactionWithEtherTransfer;
 
     private List<ArgValue> argValues;
 
@@ -63,6 +62,7 @@ public class EventEmitted implements BlockchainInteractingCriterion {
         verifiers.add(new EventTransactionFromVerifier(blockchainService));
         verifiers.add(new EventArgumentValueVerifier());
         verifiers.add(new EventInternalTransactionFromVerifier(blockchainService));
+        verifiers.add(new EventInternalTransactionWithEtherValue(blockchainService));
     }
 
     public static class EventEmittedBuilder {
@@ -102,6 +102,12 @@ public class EventEmitted implements BlockchainInteractingCriterion {
             }
 
             eventEmitted.internalTransactionSentFrom.addAll(internalTransactionSentFrom);
+
+            return this;
+        }
+
+        public EventEmittedBuilder withInternalTransactionWithEtherValue() {
+            eventEmitted.internalTransactionWithEtherTransfer = true;
 
             return this;
         }

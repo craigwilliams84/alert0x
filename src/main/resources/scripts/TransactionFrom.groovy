@@ -19,3 +19,7 @@ def sendAlerts() {
             .bodyTemplate("tx_from.template")
             .build()]
 }
+
+def isDisabled() {
+    true
+}
