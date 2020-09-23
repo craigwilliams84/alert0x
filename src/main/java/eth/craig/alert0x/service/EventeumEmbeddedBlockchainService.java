@@ -70,7 +70,7 @@ public class EventeumEmbeddedBlockchainService implements BlockchainService {
             final List<InternalTransaction> internalTransactions =
                     retryTemplate.execute((context) -> etherscanClient.getInternalTransactions(txHash));
 
-            log.info("Internal transactions for {}: {}", txHash, JSON.stringify(internalTransactions));
+            log.trace("Internal transactions for {}: {}", txHash, JSON.stringify(internalTransactions));
 
             return internalTransactions;
         } catch (Throwable t) {
