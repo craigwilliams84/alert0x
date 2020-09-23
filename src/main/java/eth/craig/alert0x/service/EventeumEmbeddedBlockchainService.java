@@ -1,5 +1,7 @@
 package eth.craig.alert0x.service;
 
+import eth.craig.alert0x.exception.Alert0xException;
+import eth.craig.alert0x.exception.RateLimitReachedException;
 import eth.craig.alert0x.model.ethereum.InternalTransaction;
 import eth.craig.alert0x.model.ethereum.TransactionReceipt;
 import eth.craig.alert0x.util.JSON;
@@ -67,8 +69,15 @@ public class EventeumEmbeddedBlockchainService implements BlockchainService {
     @Override
     public List<InternalTransaction> getInternalTransactions(String txHash) {
         try {
-            final List<InternalTransaction> internalTransactions =
-                    retryTemplate.execute((context) -> etherscanClient.getInternalTransactions(txHash));
+            final List<InternalTransaction> internalTransactions = retryTemplate.execute((context) -> {
+                try {
+                    return etherscanClient.getInternalTransactions(txHash);
+                } catch (RateLimitReachedException e) {
+                    Thread.sleep(600);
+
+                    throw new Alert0xException("Rate limit reached");
+                }
+            });
 
             log.info("Found {} internal transactions for tx {}", internalTransactions.size(), txHash);
             log.trace("Internal transactions for {}: {}", txHash, JSON.stringify(internalTransactions));

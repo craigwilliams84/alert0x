@@ -1,6 +1,10 @@
 package eth.craig.alert0x.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import eth.craig.alert0x.exception.ApiKeyNotSetException;
+import eth.craig.alert0x.exception.RateLimitReachedException;
 import eth.craig.alert0x.model.ethereum.InternalTransaction;
 import eth.craig.alert0x.settings.Alert0xSettings;
 import lombok.AllArgsConstructor;
@@ -16,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.net.URI;
 import java.util.List;
 
@@ -33,7 +38,7 @@ public class EtherscanClient {
         this.restTemplate = createRestTemplate();
     }
 
-    public List<InternalTransaction> getInternalTransactions(String txHash) {
+    public List<InternalTransaction> getInternalTransactions(String txHash) throws RateLimitReachedException {
         final String apiKey = settings.getEtherscanApiKey();
 
         if (apiKey == null || apiKey.isEmpty()) {
@@ -48,16 +53,26 @@ public class EtherscanClient {
 
         //log.info("Calling etherscan api: {}", builder.toUriString());
 
-        final ResponseEntity<EtherscanResponse<List<InternalTransaction>>> response =
+        final ResponseEntity<EtherscanResponse<JsonNode>> response =
                 restTemplate.exchange(URI.create(builder.toUriString()), HttpMethod.GET, null,
-                new ParameterizedTypeReference<EtherscanResponse<List<InternalTransaction>>>() {});
+                new ParameterizedTypeReference<EtherscanResponse<JsonNode>>() {});
 
-        if (response.getBody().getStatus().equals("0")) {
+        if (response.getBody().getStatus().equals("0") ) {
+
+            if (response.getBody().getResult().toString().contains("rate limit")) {
+                throw new RateLimitReachedException();
+            }
             throw new RuntimeException(
                     "Error when obtaining internal transactions from etherscan: " + response.getBody().message);
         }
 
-        return response.getBody().getResult();
+        try {
+            return new ObjectMapper().readValue(
+                    response.getBody().getResult().toString(), new TypeReference<List<InternalTransaction>>() {});
+        } catch (IOException e) {
+            throw new RuntimeException(
+                    "Error when parsing internal transactions from etherscan");
+        }
     }
 
     @Data
