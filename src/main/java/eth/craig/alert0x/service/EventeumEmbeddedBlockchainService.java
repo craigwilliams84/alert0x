@@ -74,7 +74,7 @@ public class EventeumEmbeddedBlockchainService implements BlockchainService {
 
             return internalTransactions;
         } catch (Throwable t) {
-            log.warn("No internal transactions to tx: {}", txHash);
+            log.error("Unable to obtain internal transactions for tx " + txHash, t);
             return Collections.emptyList();
         }
     }
