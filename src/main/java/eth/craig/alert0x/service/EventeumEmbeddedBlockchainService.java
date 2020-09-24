@@ -69,7 +69,7 @@ public class EventeumEmbeddedBlockchainService implements BlockchainService {
     @Override
     public List<InternalTransaction> getInternalTransactions(String txHash) {
         try {
-            final List<InternalTransaction> internalTransactions = retryTemplate.execute((context) -> {
+            final List<InternalTransaction> internalTransactions = etherscanRetryTemplate.execute((context) -> {
                 try {
                     return etherscanClient.getInternalTransactions(txHash);
                 } catch (RateLimitReachedException e) {
